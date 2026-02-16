@@ -60,20 +60,17 @@ const RegisterPage = () => {
 
         setLoading(true);
         try {
-            const response = await api.post('/auth/register', {
+            const response = await api.post('/api/auth/register', {
                 name: formData.name,
                 email: formData.email,
                 password: formData.password,
             });
 
             if (response.status === 201 || response.status === 200) {
-                setSuccessMessage('Account created successfully!');
-                // Placeholder for JWT storage
-                localStorage.setItem('token', response.data.token || 'placeholder-token');
-                localStorage.setItem('isAuthenticated', 'true');
+                setSuccessMessage('Account created successfully! Redirecting to login...');
 
                 setTimeout(() => {
-                    navigate('/dashboard');
+                    navigate('/login');
                 }, 1500);
             }
         } catch (error) {

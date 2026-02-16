@@ -60,8 +60,8 @@ const AuthForm = () => {
             try {
                 // Prepare the payload based on whether it's login or register
                 const endpoint = isLogin
-                    ? 'http://localhost:8080/api/auth/login'
-                    : 'http://localhost:8080/api/auth/register';
+                    ? '/api/auth/login'
+                    : '/api/auth/register';
 
                 const payload = isLogin
                     ? { email: formData.email, password: formData.password }

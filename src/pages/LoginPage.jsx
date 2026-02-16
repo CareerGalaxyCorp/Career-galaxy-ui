@@ -54,15 +54,16 @@ const LoginPage = () => {
 
         setLoading(true);
         try {
-            const response = await api.post('/auth/login', {
+            const response = await api.post('/api/auth/login', {
                 email: formData.email,
                 password: formData.password,
             });
 
             if (response.status === 200) {
                 setSuccessMessage('Login successful!');
-                // Placeholder for JWT storage
-                localStorage.setItem('token', response.data.token || 'placeholder-token');
+                const { token, user } = response.data;
+                localStorage.setItem('token', token);
+                localStorage.setItem('user', JSON.stringify(user));
                 localStorage.setItem('isAuthenticated', 'true');
 
                 setTimeout(() => {
