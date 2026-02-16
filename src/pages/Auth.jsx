@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaGoogle, FaGithub, FaEnvelope, FaLock, FaUser } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import logo from '../assets/logo.png';
 
 const Auth = () => {
     const [isLogin, setIsLogin] = useState(true);
@@ -77,6 +78,13 @@ const Auth = () => {
 
             <div className="relative w-full max-w-md bg-white/10 backdrop-blur-lg border border-white/10 rounded-2xl shadow-2xl p-8 z-10">
                 <div className="text-center mb-8">
+                    <div className="flex justify-center mb-6">
+                        <img
+                            src={logo}
+                            alt="Career Galaxy Logo"
+                            className="h-12 w-auto object-contain"
+                        />
+                    </div>
                     <h2 className="text-3xl font-bold text-white mb-2 tracking-tight">
                         {isLogin ? 'Welcome Back' : 'Join Career Galaxy'}
                     </h2>

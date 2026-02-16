@@ -10,6 +10,7 @@ import {
     XMarkIcon,
     ArrowLeftOnRectangleIcon
 } from '@heroicons/react/24/outline';
+import logo from '../assets/logo.png';
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
     const navigate = useNavigate();
@@ -40,9 +41,12 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             <aside className={`fixed top-0 left-0 z-30 w-64 h-screen transition-transform transform bg-white border-r border-gray-100 lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
                 <div className="flex items-center justify-between h-[10%] px-6 border-b border-gray-50">
                     <div className="flex items-center gap-3">
-                        <div className="p-2 bg-purple-600 rounded-lg">
-                            <RocketLaunchIcon className="w-6 h-6 text-white" />
-                        </div>
+                        <img
+                            src={logo}
+                            alt="Career Galaxy Logo"
+                            className="h-8 w-auto object-contain cursor-pointer"
+                            onClick={() => navigate('/')}
+                        />
                         <span className="text-xl font-bold text-gray-800 tracking-tight">Career Galaxy</span>
                     </div>
                     <button onClick={() => setIsOpen(false)} className="lg:hidden text-gray-500">
