@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaGoogle, FaGithub, FaEnvelope, FaLock, FaUser } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import api from '../api/axios';
 import logo from '../assets/logo.png';
 
 const Auth = () => {
@@ -11,6 +12,7 @@ const Auth = () => {
         password: '',
         confirmPassword: ''
     });
+    const [errors, setErrors] = useState({});
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -28,44 +30,47 @@ const Auth = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (isLogin) {
-            if (formData.email && formData.password) {
-                // Mock Login Validation
-                const storedUser = JSON.parse(localStorage.getItem('user'));
-                if (storedUser && storedUser.email === formData.email && storedUser.password === formData.password) {
+        setErrors({});
+
+        // Basic Validation
+        if (!isLogin && formData.password !== formData.confirmPassword) {
+            alert("Passwords do not match!");
+            return;
+        }
+
+        try {
+            let response;
+            if (isLogin) {
+                response = await api.post('/api/auth/login', {
+                    email: formData.email,
+                    password: formData.password
+                });
+            } else {
+                response = await api.post('/api/auth/register', {
+                    name: formData.fullName,
+                    email: formData.email,
+                    password: formData.password
+                });
+            }
+
+            if (response.status === 200 || response.status === 201) {
+                if (isLogin) {
+                    const { token, user } = response.data;
+                    localStorage.setItem('token', token);
+                    localStorage.setItem('user', JSON.stringify(user));
                     localStorage.setItem('isAuthenticated', 'true');
                     navigate('/dashboard');
                 } else {
-                    // Validate against the registered user, or just allow (for demo) if we want to be loose about it. 
-                    // The requirement says "Validate credentials from localStorage".
-                    if (storedUser && (storedUser.email !== formData.email || storedUser.password !== formData.password)) {
-                        alert("Invalid credentials for demo user. Please register first or use the registered credentials.");
-                        return;
-                    }
-                    // If no user exists, maybe we should auto-register or alert?
-                    // The requirement says "Validate credentials". I will assume strict validation.
-                    // But to make it easier for me to test if I forgot the password I registered with:
-                    if (!storedUser) {
-                        alert("No user registered found. Please sign up first.");
-                        return;
-                    }
-                    localStorage.setItem('isAuthenticated', 'true');
-                    navigate('/dashboard');
+                    alert("Registration successful! Please sign in.");
+                    setIsLogin(true);
                 }
             }
-        } else {
-            if (formData.email && formData.password && formData.fullName) {
-                // Register
-                if (formData.password !== formData.confirmPassword) {
-                    alert("Passwords do not match!");
-                    return;
-                }
-                localStorage.setItem('user', JSON.stringify({ fullName: formData.fullName, email: formData.email, password: formData.password }));
-                localStorage.setItem('isAuthenticated', 'true');
-                navigate('/dashboard');
-            }
+        } catch (error) {
+            console.error("Authentication error:", error);
+            const message = error.response?.data?.message || "Authentication failed. Please check your credentials and try again.";
+            alert(message);
         }
     };
 

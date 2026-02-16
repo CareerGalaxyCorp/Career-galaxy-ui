@@ -24,10 +24,10 @@ const LandingPage = () => {
                             <a href="#" className="text-gray-600 hover:text-purple-600 font-medium transition-colors">About</a>
                         </div>
                         <div className="flex items-center gap-4">
-                            <Link to="/auth" className="text-gray-900 font-medium hover:text-purple-600 transition-colors">
+                            <Link to="/login" className="text-gray-900 font-medium hover:text-purple-600 transition-colors">
                                 Sign In
                             </Link>
-                            <Link to="/auth" className="px-5 py-2 bg-gray-900 hover:bg-gray-800 text-white font-medium rounded-full transition-all hover:shadow-lg hover:-translate-y-0.5">
+                            <Link to="/register" className="px-5 py-2 bg-gray-900 hover:bg-gray-800 text-white font-medium rounded-full transition-all hover:shadow-lg hover:-translate-y-0.5">
                                 Get Started
                             </Link>
                         </div>
@@ -51,7 +51,7 @@ const LandingPage = () => {
                         Connect with industry insiders, get referred to top tech companies, and fast-track your job application process.
                     </p>
                     <div className="flex justify-center gap-4">
-                        <Link to="/auth" className="px-8 py-4 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-full text-lg shadow-xl shadow-purple-200 transition-all hover:-translate-y-1">
+                        <Link to="/register" className="px-8 py-4 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-full text-lg shadow-xl shadow-purple-200 transition-all hover:-translate-y-1">
                             Get Started for Free
                         </Link>
                         <Link to="/auth" className="px-8 py-4 bg-white hover:bg-gray-50 text-gray-900 border border-gray-200 font-bold rounded-full text-lg shadow-sm transition-all hover:-translate-y-1">
