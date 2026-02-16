@@ -12,6 +12,8 @@ const AuthForm = () => {
     });
     const [showPassword, setShowPassword] = useState(false);
     const [errors, setErrors] = useState({});
+    const [loading, setLoading] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('');
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -47,16 +49,78 @@ const AuthForm = () => {
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        setSuccessMessage('');
+
         if (validate()) {
-            console.log('Form submitted:', formData);
+            setLoading(true);
+            setErrors({});
+
+            try {
+                // Prepare the payload based on whether it's login or register
+                const endpoint = isLogin
+                    ? 'http://localhost:8080/api/auth/login'
+                    : 'http://localhost:8080/api/auth/register';
+
+                const payload = isLogin
+                    ? { email: formData.email, password: formData.password }
+                    : {
+                        name: formData.fullName,
+                        email: formData.email,
+                        password: formData.password
+                    };
+
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Success
+                    setSuccessMessage(isLogin ? 'Login successful!' : 'Account created successfully!');
+                    console.log('Success:', data);
+
+                    // Reset form after successful registration
+                    if (!isLogin) {
+                        setFormData({
+                            fullName: '',
+                            email: '',
+                            password: '',
+                            confirmPassword: '',
+                            agreeToTerms: false
+                        });
+                    }
+
+                    // You can store the token or redirect user here
+                    // localStorage.setItem('token', data.token);
+                    // window.location.href = '/dashboard';
+                } else {
+                    // Handle API errors
+                    setErrors({
+                        api: data.message || 'An error occurred. Please try again.'
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                setErrors({
+                    api: 'Unable to connect to the server. Please check if the backend is running.'
+                });
+            } finally {
+                setLoading(false);
+            }
         }
     };
 
     const toggleMode = (mode) => {
         setIsLogin(mode === 'login');
         setErrors({});
+        setSuccessMessage('');
         setFormData({
             fullName: '',
             email: '',
@@ -87,8 +151,8 @@ const AuthForm = () => {
                         <button
                             onClick={() => toggleMode('login')}
                             className={`flex-1 py-2 text-sm font-medium rounded-md transition-all duration-200 ${isLogin
-                                    ? 'bg-white text-indigo-600 shadow-sm'
-                                    : 'text-gray-500 hover:text-gray-700'
+                                ? 'bg-white text-indigo-600 shadow-sm'
+                                : 'text-gray-500 hover:text-gray-700'
                                 }`}
                         >
                             Login
@@ -96,8 +160,8 @@ const AuthForm = () => {
                         <button
                             onClick={() => toggleMode('register')}
                             className={`flex-1 py-2 text-sm font-medium rounded-md transition-all duration-200 ${!isLogin
-                                    ? 'bg-white text-indigo-600 shadow-sm'
-                                    : 'text-gray-500 hover:text-gray-700'
+                                ? 'bg-white text-indigo-600 shadow-sm'
+                                : 'text-gray-500 hover:text-gray-700'
                                 }`}
                         >
                             Register
@@ -195,11 +259,36 @@ const AuthForm = () => {
                             <p className="text-xs text-red-500">{errors.agreeToTerms}</p>
                         )}
 
+                        {/* Success Message */}
+                        {successMessage && (
+                            <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+                                <p className="text-sm text-green-700 text-center font-medium">{successMessage}</p>
+                            </div>
+                        )}
+
+                        {/* API Error Message */}
+                        {errors.api && (
+                            <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                                <p className="text-sm text-red-700 text-center">{errors.api}</p>
+                            </div>
+                        )}
+
                         <button
                             type="submit"
-                            className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold py-3 px-4 rounded-lg transform transition-all active:scale-[0.98] shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mt-2"
+                            disabled={loading}
+                            className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold py-3 px-4 rounded-lg transform transition-all active:scale-[0.98] shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mt-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                         >
-                            {isLogin ? 'Sign In' : 'Create Account'}
+                            {loading ? (
+                                <span className="flex items-center justify-center">
+                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    {isLogin ? 'Signing In...' : 'Creating Account...'}
+                                </span>
+                            ) : (
+                                isLogin ? 'Sign In' : 'Create Account'
+                            )}
                         </button>
                     </form>
 
