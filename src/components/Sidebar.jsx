@@ -19,6 +19,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         { name: 'Dashboard', icon: <HomeIcon className="w-5 h-5" />, path: '/dashboard' },
         { name: 'Profile', icon: <UserIcon className="w-5 h-5" />, path: '/dashboard/profile' },
         { name: 'Active Referrals', icon: <BriefcaseIcon className="w-5 h-5" />, path: '/dashboard/referrals' },
+        { name: 'Referral Posts', icon: <RocketLaunchIcon className="w-5 h-5" />, path: '/dashboard/referral-posts' },
         { name: 'My Applications', icon: <DocumentTextIcon className="w-5 h-5" />, path: '/dashboard/applications' },
         { name: 'Settings', icon: <Cog6ToothIcon className="w-5 h-5" />, path: '/dashboard/settings' },
     ];

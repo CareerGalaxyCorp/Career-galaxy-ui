@@ -61,9 +61,23 @@ const LoginPage = () => {
 
             if (response.status === 200) {
                 setSuccessMessage('Login successful!');
-                const { token, user } = response.data;
-                localStorage.setItem('token', token);
-                localStorage.setItem('user', JSON.stringify(user));
+                console.log("Login response data:", response.data); // Debugging
+                const { token, user, email } = response.data;
+
+                if (token) {
+                    localStorage.setItem('token', token);
+                }
+
+                // Construct user object
+                // Construct user object
+                const userObj = {
+                    name: user?.name || response.data.name,
+                    email: user?.email || email || response.data.email,
+                    ...user
+                };
+
+                localStorage.setItem('user', JSON.stringify(userObj));
+
                 localStorage.setItem('isAuthenticated', 'true');
 
                 setTimeout(() => {

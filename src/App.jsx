@@ -4,6 +4,7 @@ import Auth from './pages/Auth';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import ReferralPost from './pages/ReferralPost';
 import PrivateRoute from './components/PrivateRoute';
 
 function App() {
@@ -19,6 +20,14 @@ function App() {
           element={
             <PrivateRoute>
               <Dashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/dashboard/referral-posts"
+          element={
+            <PrivateRoute>
+              <ReferralPost />
             </PrivateRoute>
           }
         />

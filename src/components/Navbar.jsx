@@ -30,7 +30,7 @@ const Navbar = ({ onMenuClick }) => {
                 </button>
 
                 <div>
-                    <h1 className="text-lg font-semibold text-gray-800">Welcome back, {(user?.fullName || user?.name || 'User').split(' ')[0]} 👋</h1>
+                    <h1 className="text-lg font-semibold text-gray-800">Welcome back, {(user?.name || user?.fullName || 'User').split(' ')[0]} 👋</h1>
                     <p className="text-xs text-gray-500 hidden sm:block">Here's what's happening with your applications today.</p>
                 </div>
             </div>
@@ -45,12 +45,12 @@ const Navbar = ({ onMenuClick }) => {
 
                 <button className="flex items-center gap-3 pl-2 pr-1 py-1 rounded-full hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-200">
                     <img
-                        src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.fullName || user?.name || 'User'}`}
+                        src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.fullName || user?.name || user?.email || 'User'}`}
                         alt="Profile"
                         className="w-8 h-8 rounded-full bg-purple-100"
                     />
                     <div className="hidden sm:block text-left">
-                        <p className="text-sm font-medium text-gray-700">{user?.fullName || user?.name || 'User'}</p>
+                        <p className="text-sm font-medium text-gray-700">{user?.fullName || user?.name || user?.email?.split('@')[0] || 'User'}</p>
                         <p className="text-xs text-gray-500">Frontend Dev</p>
                     </div>
                     <ChevronDownIcon className="w-4 h-4 text-gray-400 hidden sm:block" />

@@ -69,6 +69,8 @@ const RegisterPage = () => {
             if (response.status === 201 || response.status === 200) {
                 setSuccessMessage('Account created successfully! Redirecting to login...');
 
+
+
                 setTimeout(() => {
                     navigate('/login');
                 }, 1500);
