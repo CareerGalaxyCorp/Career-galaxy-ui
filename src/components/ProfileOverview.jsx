@@ -68,6 +68,7 @@ const ProfileOverview = () => {
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Technical Field</label>
                             <select className="w-full p-3 bg-gray-50 rounded-lg text-gray-800 border border-transparent focus:border-purple-300 focus:bg-white focus:ring-0 transition-colors outline-none">
+                                <option>Select</option>
                                 <option>Frontend Developer</option>
                                 <option>Backend Developer</option>
                                 <option>Full Stack Developer</option>
