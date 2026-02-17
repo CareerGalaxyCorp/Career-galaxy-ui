@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { FaUser, FaEnvelope, FaLock, FaRocket, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
+import logo from '../assets/logo.png';
 import api from '../api/axios';
 
 const RegisterPage = () => {
@@ -88,9 +89,11 @@ const RegisterPage = () => {
             <div className="w-full max-w-md bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
                 <div className="text-center mb-8">
                     <div className="flex justify-center mb-4">
-                        <div className="bg-indigo-600 p-3 rounded-xl shadow-md text-white">
-                            <FaRocket size={24} />
-                        </div>
+                        <img
+                            src={logo}
+                            alt="Career Galaxy Logo"
+                            className="w-16 h-16 mx-auto mb-4 object-contain"
+                        />
                     </div>
                     <h1 className="text-2xl font-bold text-gray-900">Create Account</h1>
                     <p className="text-gray-500 mt-1">Join Career Galaxy today</p>

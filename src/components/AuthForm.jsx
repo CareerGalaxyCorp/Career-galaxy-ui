@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { FaRocket, FaGoogle, FaGithub, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaGoogle, FaGithub, FaEye, FaEyeSlash } from 'react-icons/fa';
+import logo from '../assets/logo.png'; // ✅ Your logo import
 
 const AuthForm = () => {
     const [isLogin, setIsLogin] = useState(true);
@@ -58,7 +59,6 @@ const AuthForm = () => {
             setErrors({});
 
             try {
-                // Prepare the payload based on whether it's login or register
                 const endpoint = isLogin
                     ? '/api/auth/login'
                     : '/api/auth/register';
@@ -82,11 +82,9 @@ const AuthForm = () => {
                 const data = await response.json();
 
                 if (response.ok) {
-                    // Success
                     setSuccessMessage(isLogin ? 'Login successful!' : 'Account created successfully!');
                     console.log('Success:', data);
 
-                    // Reset form after successful registration
                     if (!isLogin) {
                         setFormData({
                             fullName: '',
@@ -97,11 +95,7 @@ const AuthForm = () => {
                         });
                     }
 
-                    // You can store the token or redirect user here
-                    // localStorage.setItem('token', data.token);
-                    // window.location.href = '/dashboard';
                 } else {
-                    // Handle API errors
                     setErrors({
                         api: data.message || 'An error occurred. Please try again.'
                     });
@@ -134,12 +128,16 @@ const AuthForm = () => {
     return (
         <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 p-4 font-sans">
             <div className="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden transition-all duration-300 transform hover:shadow-2xl">
+
                 {/* Header Section */}
                 <div className="text-center pt-8 pb-4">
                     <div className="flex justify-center items-center mb-2">
-                        <div className="bg-gradient-to-tr from-indigo-500 to-purple-600 p-3 rounded-full shadow-lg">
-                            <FaRocket className="text-white text-2xl" />
-                        </div>
+                        {/* ✅ LOGO REPLACED HERE */}
+                        <img
+                            src={logo}
+                            alt="Career Galaxy Logo"
+                            className="h-16 w-auto object-contain"
+                        />
                     </div>
                     <h2 className="text-2xl font-bold text-gray-800 tracking-tight">Career Galaxy</h2>
                     <p className="text-sm text-gray-500 mt-1">Launch your career journey</p>
@@ -259,14 +257,12 @@ const AuthForm = () => {
                             <p className="text-xs text-red-500">{errors.agreeToTerms}</p>
                         )}
 
-                        {/* Success Message */}
                         {successMessage && (
                             <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
                                 <p className="text-sm text-green-700 text-center font-medium">{successMessage}</p>
                             </div>
                         )}
 
-                        {/* API Error Message */}
                         {errors.api && (
                             <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
                                 <p className="text-sm text-red-700 text-center">{errors.api}</p>
@@ -280,47 +276,13 @@ const AuthForm = () => {
                         >
                             {loading ? (
                                 <span className="flex items-center justify-center">
-                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                    </svg>
-                                    {isLogin ? 'Signing In...' : 'Creating Account...'}
+                                    Processing...
                                 </span>
                             ) : (
                                 isLogin ? 'Sign In' : 'Create Account'
                             )}
                         </button>
                     </form>
-
-                    <div className="relative my-6">
-                        <div className="absolute inset-0 flex items-center">
-                            <div className="w-full border-t border-gray-200"></div>
-                        </div>
-                        <div className="relative flex justify-center text-xs">
-                            <span className="px-2 bg-white text-gray-400 font-medium">
-                                OR CONTINUE WITH
-                            </span>
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-3">
-                        <button className="flex items-center justify-center w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-200">
-                            <FaGoogle className="text-red-500 mr-2" />
-                            <span className="text-sm font-medium text-gray-700">Google</span>
-                        </button>
-                        <button className="flex items-center justify-center w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-200">
-                            <FaGithub className="text-gray-900 mr-2" />
-                            <span className="text-sm font-medium text-gray-700">GitHub</span>
-                        </button>
-                    </div>
-
-                    {isLogin && (
-                        <div className="mt-6 text-center">
-                            <a href="#" className="text-xs text-indigo-600 hover:text-indigo-500 font-medium hover:underline">
-                                Forgot your password?
-                            </a>
-                        </div>
-                    )}
                 </div>
             </div>
         </div>
